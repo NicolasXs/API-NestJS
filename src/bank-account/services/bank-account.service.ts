@@ -3,15 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateBankAccountDto } from '../dto/create-bank-account.dto';
-
-import {
-  BankAccount,
-  BankAccountDocument,
-} from '../schemas/bank-account.entity';
+import { BankAccount, BankAccountDocument } from '../schemas/bank-account.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TransactionAccountDto } from '../dto/transaction-account.dto';
+
+export interface CreateBankAccountDto {
+  accountNumber: string;
+  accountType: string;
+  balance: number;
+  owner: string;
+}
 
 @Injectable()
 export class BankAccountService {
@@ -20,30 +22,37 @@ export class BankAccountService {
     private bankModel: Model<BankAccountDocument>,
   ) {}
 
-  public async create(
-    createBankAccountDto: CreateBankAccountDto,
-  ): Promise<BankAccount> {
-    return this.bankModel.create(createBankAccountDto);
+  async create(createBankAccountDto: CreateBankAccountDto): Promise<BankAccount> {
+    const createdAccount = new this.bankModel(createBankAccountDto);
+    return createdAccount.save();
   }
 
-  public async findAll(): Promise<BankAccount[]> {
+  async findAll(): Promise<BankAccount[]> {
     return this.bankModel.find().populate('owner');
   }
 
-  public async findOne(_id: string): Promise<BankAccount> {
-    const bankAccount = await this.bankModel.findById(_id).populate('owner');
-    if (!bankAccount) {
-      throw new NotFoundException('Bank account not found');
+  async findOne(_id: string): Promise<BankAccount> {
+    try {
+      const bankAccount = await this.bankModel.findById(_id).populate('owner');
+      if (!bankAccount) {
+        throw new NotFoundException('Bank account not found');
+      }
+      return bankAccount;
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    return bankAccount;
   }
 
-  public async findAccountByUserId(_id: string): Promise<BankAccount> {
-    const bankAccount = await this.bankModel.findOne({ owner: _id }).populate('owner');
-    if (!bankAccount) {
-      throw new NotFoundException('Bank account not found');
+  async findAccountByUserId(_id: string): Promise<BankAccount> {
+    try {
+      const bankAccount = await this.bankModel.findOne({ owner: _id }).populate('owner');
+      if (!bankAccount) {
+        throw new NotFoundException('Bank account not found');
+      }
+      return bankAccount;
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    return bankAccount;
   }
 
   private validSaque(currentBalance: number, value: number): number {
@@ -52,22 +61,25 @@ export class BankAccountService {
     return newBalance;
   }
 
-  public async sacar(_id: string, dto: TransactionAccountDto): Promise<any> {
-    const account = await this.findOne(_id);
-    const balance = this.validSaque(account.balance, dto.balance);
-
-    return this.bankModel.updateOne({ _id }, { balance });
+  async withdraw(_id: string, dto: TransactionAccountDto): Promise<any> {
+    try {
+      const account = await this.findOne(_id);
+      const balance = this.validSaque(account.balance, dto.balance);
+      await this.bankModel.updateOne({ _id }, { balance });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  public async depositar(
-    _id: string,
-    dto: TransactionAccountDto,
-  ): Promise<any> {
-    const account = await this.findOne(_id);
-    const balance = dto.balance + account.balance;
-    return this.bankModel.updateOne({ _id }, { balance });
+  async deposit(_id: string, dto: TransactionAccountDto): Promise<any> {
+    try {
+      const account = await this.findOne(_id);
+      const balance = dto.balance + account.balance;
+      await this.bankModel.updateOne({ _id }, { balance });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
-
   public async remove(_id: string): Promise<any> {
     await this.findOne(_id);
     return this.bankModel.deleteOne({ _id });

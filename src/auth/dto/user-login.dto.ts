@@ -3,12 +3,12 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class UserLoginDto {
   @ApiProperty()
-  @IsNotEmpty({ message: 'É necessário informar o e-mail.' })
-  @IsEmail({}, { message: 'O e-mail informado é invalido' })
+  @IsNotEmpty({ message: 'Por favor, informe um endereço de e-mail.' })
+  @IsEmail({}, { message: 'O endereço de e-mail informado é inválido.' })
   email: string;
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'É necessário informar o password' })
-  @MinLength(8, { message: 'Password deve ser maior ou igual a 8 caracteres' })
+  @IsNotEmpty({ message: 'Por favor, informe a senha.' })
+  @MinLength(8, { message: 'A senha deve ter pelo menos 8 caracteres.' })
   password: string;
 }

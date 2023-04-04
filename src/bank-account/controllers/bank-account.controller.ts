@@ -39,20 +39,20 @@ export class BankAccountController {
     return this.bankAccountService.remove(_id);
   }
 
-  @Patch(':id/sacar')
-  public async sacar(
+  @Patch(':id/withdraw')
+  public async withdraw(
     @Param('id') _id: string,
     @Body() dto: TransactionAccountDto,
   ): Promise<any> {
-    return this.bankAccountService.sacar(_id, dto);
+    return this.bankAccountService.withdraw(_id, dto);
   }
 
-  @Patch(':id/depositar')
-  public async depositar(
+  @Patch(':id/deposit')
+  public async deposit(
     @Param('id') _id: string,
     @Body() dto: TransactionAccountDto,
   ): Promise<any> {
-    return this.bankAccountService.depositar(_id, dto);
+    return this.bankAccountService.deposit(_id, dto);
   }
 
   @Get('/owner/:id')

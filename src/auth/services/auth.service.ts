@@ -1,33 +1,34 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { UserLoginDto } from '../dto/user-login.dto';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from 'src/users/schemas/user.entity';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+
+import { UserLoginDto } from '../dto/user-login.dto';
 import { ILogin } from '../interfaces/ILogin';
+import { User, UserDocument } from 'src/users/schemas/user.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
 
-  private async findByEmail(email: string): Promise<User> {
-    return this.userModel.findOne(
+  public async validateUser(dto: UserLoginDto): Promise<ILogin> {
+    const { email, password } = dto;
+    const user = await this.userModel.findOne(
       { email: email.toLowerCase() },
       { password: 1, name: 1, email: 1 },
     );
-  }
 
-  private async comparePass(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
-  }
+    if (!user) {
+      throw new ForbiddenException('E-mail ou senha inválidos');
+    }
 
-  public async validateUser(dto: UserLoginDto): Promise<ILogin> {
-    const user = await this.findByEmail(dto.email);
-    if (!user) throw new ForbiddenException('Invalid credentials');
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
-    const passMatch = await this.comparePass(dto.password, user.password);
-
-    if (!passMatch) throw new ForbiddenException('Invalid credentials');
+    if (!passwordMatch) {
+      throw new ForbiddenException('E-mail ou senha inválidos');
+    }
 
     return { _id: user._id, email: user.email };
   }
