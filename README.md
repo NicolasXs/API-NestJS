@@ -1,5 +1,9 @@
 # **API REST -Nest.js**
 
+Desenvolvido por **[NicolasXS](https://github.com/NicolasXs)**.
+
+A aplicação estará disponível em **[http://localhost:3000](http://localhost:3000/)**.
+
 Esta é uma API Rest desenvolvida com a tecnologia NestJS para atender as necessidades do Desafio Técnico - TIVIC. Os serviços disponibilizados pela API incluem a verificação de saldo, depósito e saque em contas correntes.
 
 ## **Requisitos**
@@ -29,20 +33,6 @@ Foi utilizada a arquitetura em camadas com a separação clara entre as responsa
 ## **Executando a aplicação**
 
 Para executar a aplicação, é necessário ter o Node.js e o instalados em sua máquina. Após clonar o repositório, execute os seguintes comandos:
-
-```
-
-$ npm install
-
-$ npm run start:dev
-
-```
-
-A aplicação estará disponível em **[http://localhost:3000](http://localhost:3000/)**.
-
-## **Autor**
-
-Desenvolvido por **[NicolasXS](https://github.com/NicolasXs)**.
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
