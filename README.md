@@ -1,3 +1,49 @@
+# **API REST -Nest.js**
+
+Esta é uma API Rest desenvolvida com a tecnologia NestJS para atender as necessidades do Desafio Técnico - TIVIC. Os serviços disponibilizados pela API incluem a verificação de saldo, depósito e saque em contas correntes.
+
+## **Requisitos**
+
+- Serviço para verificar o saldo de uma conta corrente;
+- Serviço para realizar um depósito em uma determinada conta corrente;
+- Serviço para realizar um saque de uma determinada conta corrente.
+
+## **Funcionalidades**
+
+1. Verificação de saldo: para verificar o saldo de uma conta corrente, basta enviar uma requisição GET para o endpoint **`/bank-account/{id}`**, onde **`:id`** é o número da conta desejada.
+2. Depósito em conta: para realizar um depósito em uma conta corrente, envie uma requisição PUT para o endpoint **`/bank-account/{id}/deposit`**, passando o valor do depósito no corpo da requisição.
+3. Saque em conta: para realizar um saque em uma conta corrente, envie uma requisição PUT para o endpoint **`/bank-account/{id}/withdraw`**, passando o valor do saque no corpo da requisição. É importante verificar se a conta tem saldo suficiente para realizar o saque.
+
+## **Arquitetura**
+
+A arquitetura utilizada neste projeto segue o padrão MVC (Model-View-Controller), com separação clara entre as camadas de controle, serviço e modelo. A camada de controle lida com as requisições HTTP e encaminha para os serviços correspondentes, que, por sua vez, manipulam os dados do modelo. A camada de modelo é responsável por lidar com a persistência dos dados no banco de dados.
+
+## **Análise**
+
+Durante o desenvolvimento, foi necessário lidar com questões relacionadas à segurança da API, como autenticação e autorização, além de garantir que a aplicação fosse escalável e tolerante a falhas. Também foi necessário lidar com a integração do backend com o frontend desenvolvido em Angular.
+
+## **Soluções Arquiteturais**
+
+Foi utilizada a arquitetura em camadas com a separação clara entre as responsabilidades de cada camada. Além disso, foi utilizado o padrão DTO (Data Transfer Object) para a transferência de dados entre as camadas e o cliente, e a API foi documentada utilizando o Swagger.
+
+## **Executando a aplicação**
+
+Para executar a aplicação, é necessário ter o Node.js e o instalados em sua máquina. Após clonar o repositório, execute os seguintes comandos:
+
+```
+
+$ npm install
+
+$ npm run start:dev
+
+```
+
+A aplicação estará disponível em **[http://localhost:3000](http://localhost:3000/)**.
+
+## **Autor**
+
+Desenvolvido por **[NicolasXS](https://github.com/NicolasXs)**.
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
