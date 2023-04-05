@@ -2,7 +2,7 @@
 
 Desenvolvido por **[NicolasXS](https://github.com/NicolasXs)**.
 
-A aplicação estará disponível em **[http://localhost:3000](http://localhost:3000/)**.
+A aplicação estará disponível em **[http://localhost:3000/api](http://localhost:3000/api)**.
 
 Esta é uma API Rest desenvolvida com a tecnologia NestJS para atender as necessidades do Desafio Técnico - TIVIC. Os serviços disponibilizados pela API incluem a verificação de saldo, depósito e saque em contas correntes.
 
