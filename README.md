@@ -1,4 +1,4 @@
-# **API REST -Nest.js**
+# **API REST -Nest.js - MongoDB**
 
 Desenvolvido por **[NicolasXS](https://github.com/NicolasXs)**.
 
